@@ -10,11 +10,12 @@ read -p "请输入您的选择: " choice
 case $choice in
     1)
         echo "您选择了方法一"
+		ls
         ;;
     2)
         echo "您选择了方法二"
         ;;
     *)
-        echo "无效的选择，请重新输入。"
+        echo "已退出。"
         ;;
 esac
