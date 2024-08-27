@@ -5,9 +5,8 @@ echo "请选择要执行的操作："
 echo "1. 自动安装Docker+MPN+MySql+Wordpress"
 echo "2. 卸载Docker"
 
-read -p "请输入您的选择: " choice
-
 while true; do
+    read -p "请输入您的选择: " choice
     case $choice in
     1)
         echo "您选择了方法一"
@@ -21,7 +20,7 @@ while true; do
         exit 1
         ;;
     *)
-        echo "无效输入"        
+        echo "无效输入"
         ;;
     esac
 done
