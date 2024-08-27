@@ -223,10 +223,13 @@ while true; do
     read -p "请输入mysql数据库密码:" mysql_passwd
     if [ -z "$mysql_passwd" ]; then
         echo "请输入数据库密码"
+        continue
     fi
     if [ ${#mysql_passwd} -lt 9 ]; then
         echo "长度需要大于等于9"
+        continue
     fi
+    break
 done
 
 # 设置mysql内网ip
