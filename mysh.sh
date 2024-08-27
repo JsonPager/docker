@@ -5,8 +5,9 @@ cd /home
 while true; do
     echo "请选择要执行的操作："
     echo "1. 自动安装Docker+MPN+MySql+Wordpress"
-    echo "2. 卸载Docker"
-    echo "3. 退出"
+    echo "2. 手动安装Docker+MPN+MySql+Wordpress"
+    echo "3. 卸载Docker"
+    echo "4. 退出"
     read -p "请输入您的选择: " choice
     case $choice in
     1)
@@ -15,10 +16,15 @@ while true; do
         # ls
         ;;
     2)
+        echo "手动安装Docker+MPN+MySql+Wordpress"
+        curl -L https://raw.githubusercontent.com/JsonPager/docker/main/dmw_h.sh -o dmw_h.sh && chmod +x dmw_h.sh && ./dmw_h.sh
+        # ls
+        ;;
+    3)
         echo "卸载Docker"
         curl -L https://raw.githubusercontent.com/JsonPager/docker/main/undocker.sh -o undocker.sh && chmod +x undocker.sh && ./undocker.sh
         ;;
-    3)
+    4)
         echo "退出"
         exit 1
         ;;
