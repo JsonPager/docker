@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /home
 echo "请选择要执行的操作："
 echo "1. 执行方法一"
 echo "2. 执行方法二"
