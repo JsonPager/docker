@@ -19,3 +19,24 @@ if ! systemctl is-active docker; then
 else
     echo "Docker 运行中"
 fi
+
+for container_id in $(docker ps -a -q); do
+    # 获取容器名称
+    container_name=$(docker inspect --format='{{.Name}}' "$container_id")
+    container_name=${container_name#"/"} # 去除名称前面的 /
+    echo "正在删除容器$container_name"
+    # 检查容器是否存在挂载卷
+    volumes=$(docker inspect --format='{{.Mounts}}' "$container_id")
+
+    # 如果有挂载卷，则提示用户是否删除
+    if [[ -n "$volumes" ]]; then
+        read -p "容器 $container_name ($container_id) 存在挂载卷，是否删除？(y/n): " delete_volume
+        if [[ $delete_volume == "y" || $delete_volume == "Y" ]]; then
+            # 获取卷名并删除
+            for volume in $(echo "$volumes" | jq -r '.[].Name'); do
+                echo "需要删除的卷$volume"
+                # docker volume rm "$volume"
+            done
+        fi
+    fi
+done
