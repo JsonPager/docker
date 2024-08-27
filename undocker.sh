@@ -12,6 +12,11 @@ if ! systemctl is-active docker; then
     systemctl start docker
     if ! systemctl is-active docker; then
         echo "启动 Docker 服务失败，正在卸载 Docker..."
+        # 删除旧包
+        apt-get remove docker docker-engine docker.io containerd runc
+        # 删除link的文件夹
+        rm -rf /opt/docker
+        rm -rf /var/lib/docker
         exit 1
     else
         echo "Docker 服务启动成功！"
@@ -30,7 +35,9 @@ for container_id in $(docker ps -a -q); do
     volumes=$(docker inspect --format='{{json .Mounts}}' "$container_id")
 
     # 停止容器
+    docker stop "$container_id"
     # 删除容器
+    docker rm "$container_id"
 
     # 如果有挂载卷，则提示用户是否删除
     if [[ -n "$volumes" ]]; then
@@ -39,9 +46,19 @@ for container_id in $(docker ps -a -q); do
             # 获取卷名并删除
             for volume in $(echo "$volumes" | jq -r '.[].Source'); do
                 echo "需要删除的卷$volume"
-                # rm -rf "$volume"
-                # docker volume rm "$volume"
+                rm -rf "$volume"
             done
         fi
     fi
 done
+
+docker rmi $(docker images -q)
+
+systemctl disable docker
+systemctl stop docker
+
+# 删除旧包
+apt-get remove docker docker-engine docker.io containerd runc
+# 删除link的文件夹
+rm -rf /opt/docker
+rm -rf /var/lib/docker
