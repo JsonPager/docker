@@ -236,7 +236,9 @@ mysqlport=$(get_unused_port)
 
 echo "创建mysql容器"
 docker run --privileged=true -itd --restart=always --name $container_mysql -p $mysqlport:3306 --network=mynet --ip $mysqlip -v /opt/dockerservice/$container_mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$mysql_passwd -e MYSQL_DATABASE=$mysql_dbname -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password mysql:latest
-echo "创建mysql容器完成"
+echo "创建mysql容器完成,重新启动容器"
+
+docker restart $container_mysql
 
 # 设置wordpress容器名称
 while true; do
@@ -260,6 +262,8 @@ wordpressport=$(get_unused_port)
 echo "创建wordpress容器"
 docker run --privileged=true -itd --restart=always --name=$container_wordpress -p $wordpressport:80 --network=mynet --ip $wordpressip -v /opt/dockerservice/$container_wordpress:/var/www/html -e WORDPRESS_DB_HOST=$mysqlip:3306 -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=$mysql_passwd -e WORDPRESS_DB_NAME=$mysql_dbname wordpress
 echo "创建wordpress容器完成"
+
+docker restart $container_wordpress
 
 echo "mysql数据库:$mysql_dbname ,用户名:root, 密码: $mysql_passwd ,内网ip:$mysqlip ,外网映射端口: $mysqlport"
 echo "wordpress内网ip:$wordpressip ,外网映射端口:$wordpressport"
