@@ -16,4 +16,6 @@ if ! systemctl is-active docker; then
     else
         echo "Docker 服务启动成功！"
     fi
+else
+    echo "Docker 运行中"
 fi
