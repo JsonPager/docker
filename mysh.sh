@@ -1,12 +1,12 @@
 #!/bin/bash
 
 cd /home
-echo "请选择要执行的操作："
-echo "1. 自动安装Docker+MPN+MySql+Wordpress"
-echo "2. 卸载Docker"
-echo "3. 退出"
 
 while true; do
+    echo "请选择要执行的操作："
+    echo "1. 自动安装Docker+MPN+MySql+Wordpress"
+    echo "2. 卸载Docker"
+    echo "3. 退出"
     read -p "请输入您的选择: " choice
     case $choice in
     1)
