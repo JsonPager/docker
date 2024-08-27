@@ -54,11 +54,13 @@ install_docker() {
 
 # 检测mynet网络是否存在
 function check_network() {
-    local network_exists=$(docker network ls -q --filter name=mynet 2>/dev/null)
-
+    network_exists=$(docker network ls -q --filter name=mynet 2>/dev/null)
+    
     if [[ -z "$network_exists" ]]; then
+        echo "create mynet"
         return 1
     else
+        echo "no create mynet"
         return 0
     fi
 }
@@ -167,6 +169,8 @@ else
         exit 1
     fi
 fi
+
+sleep 5
 
 # 检测网络是否存在，不存在就创建网络
 checknetresult=$(check_network)
