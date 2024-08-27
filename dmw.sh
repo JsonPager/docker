@@ -4,7 +4,7 @@ install_docker() {
     arch=$(dpkg --print-architecture)
     echo $arch
     # 删除旧包
-    apt-get remove docker docker-engine docker.io containerd runc
+    apt-get remove docker docker-ce docker-ce-cli containerd.io docker-engine docker.io containerd runc
     # 删除link的文件夹
     rm -rf /opt/docker
     rm -rf /var/lib/docker
@@ -68,7 +68,13 @@ startbuild() {
     fi
 }
 
-# 安装docker
-install_docker
-# 调用函数检查状态
-startbuild 
+# 检查docker服务是否存在
+if command -v docker &>/dev/null; then
+    echo "Docker服务已存在"
+    exit 1
+else
+    # 安装docker
+    install_docker
+    # 开始构建容器
+    startbuild
+fi
