@@ -235,7 +235,7 @@ mysqlip=$(getmynetnewip)
 mysqlport=$(get_unused_port)
 
 echo "创建mysql容器"
-docker run --privileged=true -itd --restart=always --name $container_mysql -p $mysqlport:3306 --network=mynet --ip $mysqlip -v /opt/dockerservice/$container_mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$mysql_passwd -e MYSQL_DATABASE=$mysql_dbname -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password mysql:latest
+docker run --privileged=true -itd --restart=always --name $container_mysql -p $mysqlport:3306 --network=mynet --ip $mysqlip -v /opt/dockerservice/$container_mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD="$mysql_passwd" -e MYSQL_DATABASE=$mysql_dbname -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password mysql:latest
 echo "创建mysql容器完成,重新启动容器"
 
 docker restart $container_mysql
