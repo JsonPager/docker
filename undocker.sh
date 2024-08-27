@@ -13,6 +13,7 @@ if ! systemctl is-active docker; then
     if ! systemctl is-active docker; then
         echo "启动 Docker 服务失败，正在卸载 Docker..."
         exit 1
+    else
+        echo "Docker 服务启动成功！"
     fi
 fi
-
