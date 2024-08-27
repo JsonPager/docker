@@ -54,11 +54,11 @@ done
 
 docker rmi $(docker images -q)
 
-systemctl disable docker
 systemctl stop docker
+systemctl disable docker
 
 # 删除旧包
-apt-get remove docker docker-engine docker.io containerd runc
+apt-get remove docker docker-ce docker-ce-cli containerd.io docker-engine docker.io containerd runc
 # 删除link的文件夹
 rm -rf /opt/docker
 rm -rf /var/lib/docker
