@@ -71,4 +71,4 @@ startbuild() {
 # 安装docker
 install_docker
 # 调用函数检查状态
-startbuild
+startbuild 
