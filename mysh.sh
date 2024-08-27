@@ -7,15 +7,21 @@ echo "2. 卸载Docker"
 
 read -p "请输入您的选择: " choice
 
-case $choice in
+while true; do
+    case $choice in
     1)
         echo "您选择了方法一"
-		# ls
+        # ls
         ;;
     2)
         echo "您选择了方法二"
         ;;
-    *)
-        echo "已退出。"
+    3)
+        echo "退出"
+        exit 1
         ;;
-esac
+    *)
+        echo "无效输入"        
+        ;;
+    esac
+done
