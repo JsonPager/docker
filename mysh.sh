@@ -11,6 +11,7 @@ while true; do
     case $choice in
     1)
         echo "自动安装Docker+MPN+MySql+Wordpress"
+        curl -L https://raw.githubusercontent.com/JsonPager/docker/main/dmw.sh -o dmw.sh && chmod +x dmw.sh && ./dmw.sh
         # ls
         ;;
     2)
