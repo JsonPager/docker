@@ -57,9 +57,9 @@ function check_network() {
     network_exists=$(docker network ls -q --filter name=mynet 2>/dev/null)
     
     if [[ -z "$network_exists" ]]; then       
-        return 1
+        echo 1
     else
-        return 0
+        echo 0
     fi
 }
 
