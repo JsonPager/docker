@@ -141,6 +141,7 @@ function get_unused_port() {
     echo "$port"
 }
 
+# 安装net-tools以便支持随机端口的netstat命令
 apt install net-tools -y
 
 # 检查docker服务是否存在，确定docker服务运行
