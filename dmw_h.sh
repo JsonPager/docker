@@ -141,6 +141,8 @@ function get_unused_port() {
     echo "$port"
 }
 
+apt install net-tools -y
+
 # 检查docker服务是否存在，确定docker服务运行
 if command -v docker &>/dev/null; then
     echo "Docker服务已存在"
