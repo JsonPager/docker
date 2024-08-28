@@ -13,7 +13,7 @@ if ! systemctl is-active docker; then
     if ! systemctl is-active docker; then
         echo "启动 Docker 服务失败，正在卸载 Docker..."
         # 删除旧包
-        apt-get remove docker docker-engine docker.io containerd runc
+        apt-get remove docker-ce docker-ce-cli containerd.io docker docker-engine docker.io containerd runc        
         # 删除link的文件夹
         rm -rf /opt/docker
         rm -rf /var/lib/docker
@@ -58,7 +58,7 @@ systemctl stop docker
 systemctl disable docker
 
 # 删除旧包
-apt-get remove docker docker-ce docker-ce-cli containerd.io docker-engine docker.io containerd runc
+apt-get remove docker-ce docker-ce-cli containerd.io docker docker-engine docker.io containerd runc
 # 删除link的文件夹
 rm -rf /opt/docker
 rm -rf /var/lib/docker
