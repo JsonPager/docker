@@ -60,7 +60,7 @@ startbuild() {
         echo "创建npm容器"
         docker run --privileged=true -itd --restart=always --name=npm -p 80:80 -p 81:81 -p 443:443 --network=mynet --ip 192.168.0.2 -v /opt/dockerservice/npm/data:/data -v /opt/dockerservice/npm/letsencrypt:/etc/letsencrypt jc21/nginx-proxy-manager:latest
         echo "创建mysql容器"
-        docker run --privileged=true -itd --restart=always --name mysql -p 33306:3306 --network=mynet --ip 192.168.0.3 -v /opt/dockerservice/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=lanlongning -e MYSQL_DATABASE=wordpressdb -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password mysql:latest
+        docker run --privileged=true -itd --restart=always --name mysql -p 33306:3306 --network=mynet --ip 192.168.0.3 -v /opt/dockerservice/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=lanlongning -e MYSQL_ROOT_HOST=% -e MYSQL_DATABASE=wordpressdb -e MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password mysql:latest
         echo "创建wordpress容器"
         docker run --privileged=true -itd --restart=always --name=wordpress -p 8000:80 --network=mynet --ip 192.168.0.4 -v /opt/dockerservice/wordpress:/var/www/html -e WORDPRESS_DB_HOST=192.168.0.3:3306 -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=lanlongning -e WORDPRESS_DB_NAME=wordpressdb wordpress
     else
