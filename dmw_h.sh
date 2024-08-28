@@ -55,8 +55,8 @@ install_docker() {
 # 检测mynet网络是否存在
 function check_network() {
     network_exists=$(docker network ls -q --filter name=mynet 2>/dev/null)
-    
-    if [[ -z "$network_exists" ]]; then       
+
+    if [[ -z "$network_exists" ]]; then
         echo 1
     else
         echo 0
@@ -102,7 +102,7 @@ function getmynetnewip() {
     IFS='.' read -ra ip_parts <<<"$max_ip"
 
     # 对最低位加 1，并处理进位
-    ((ip_parts[3]++))
+    ip_parts[3]=$((ip_parts[3] + $1))
     for ((i = 3; i >= 1; i--)); do
         if [ ${ip_parts[$i]} -gt 255 ]; then
             ((ip_parts[$i] %= 256))
@@ -230,7 +230,7 @@ while true; do
 done
 
 # 设置mysql内网ip
-mysqlip=$(getmynetnewip)
+mysqlip=$(getmynetnewip 1)
 # 设置mysql外网映射端口号
 mysqlport=$(get_unused_port)
 
@@ -254,7 +254,7 @@ while true; do
 done
 
 # 设置wordpress内网ip
-wordpressip=$(getmynetnewip)
+wordpressip=$(getmynetnewip 2)
 # 设置wordpress外网映射端口号
 wordpressport=$(get_unused_port)
 
@@ -262,8 +262,6 @@ echo "创建wordpress容器"
 runwordpress="docker run --privileged=true -itd --restart=always --name=$container_wordpress -p $wordpressport:80 --network=mynet --ip $wordpressip -v /opt/dockerservice/$container_wordpress:/var/www/html -e WORDPRESS_DB_HOST=$mysqlip:3306 -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=$mysql_passwd -e WORDPRESS_DB_NAME=$mysql_dbname wordpress"
 eval $runwordpress
 echo "创建wordpress容器完成"
-
-docker restart $container_wordpress
 
 echo "mysql数据库:$mysql_dbname ,用户名:root, 密码: $mysql_passwd ,内网ip:$mysqlip ,外网映射端口: $mysqlport"
 echo "wordpress内网ip:$wordpressip ,外网映射端口:$wordpressport"
