@@ -268,3 +268,4 @@ echo "wordpress内网ip:$wordpressip ,外网映射端口:$wordpressport"
 
 # 开始构建容器
 # startbuild
+
