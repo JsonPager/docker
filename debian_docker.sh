@@ -1,0 +1,51 @@
+# 安装docker
+install_docker(){
+   #查看架构
+   arch=$(dpkg --print-architecture)
+   echo $arch
+   # 删除旧包
+   apt-get remove docker-ce docker-ce-cli containerd.io docker docker-engine docker.io containerd runc
+   # 删除link的文件夹
+   rm -rf /opt/docker
+   # 安装需要的工具
+   apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+   #导入源仓库的 GPG key
+   curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+   #Docker APT 软件源添加到你的系统
+   add-apt-repository -y "deb [arch=$arch] https://download.docker.com/linux/debian $(lsb_release -cs) stable"   
+   #更新软件包索引，安装 Docker 最新版本
+   apt update -y
+   apt install -y docker-ce docker-ce-cli containerd.io      
+   echo "安装完成，查看服务状态"
+   systemctl --no-pager status docker
+   echo "查看版本号"
+   docker -v
+   read -p "检查服务及版本状态，确认是否继续安装 ? [Y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
+	        echo "停止服务"
+	        systemctl stop docker
+                        echo "创建新的docker路径"
+                        mkdir -p /opt/docker
+                        echo "将原docker的文件移动到新的位置"
+                        mv /var/lib/docker/* /opt/docker
+                        echo "进入原docker路径下"
+                        cd /var/lib
+                        echo "删除docker文件夹"
+                        rm -rf docker
+                        echo "添加原docker路径的link到新的位置"
+                        ln -s /opt/docker/ /var/lib/docker
+                        echo "查看link文件夹的内容，确定link起效"
+                        ls -la docker
+                        echo "回到root"
+                        cd
+                        echo "启动docker"
+                        systemctl restart docker
+                        echo "查看docker状态"
+                        systemctl --no-pager status docker
+	fi
+}
+
+install_docker
+# 如果提示什么应用docker引擎失败就执行  rm -rf /etc/docker/daemon.json ，删除这个json文件，然后多systemctl restart docker ，或者 systemctl stop docker，然后再重启几次
+
